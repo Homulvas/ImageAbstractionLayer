@@ -43,6 +43,10 @@ app.get('/recent', function (req, res) {
     })
 })
 
+app.get('/', function (req, res) {
+    res.send('go to /search to query images, or to /recent to see request history')
+})
+
 var port = process.env.PORT || 8080
 app.listen(port, function () {
     console.log('Server listening on port ' + port + '!')
