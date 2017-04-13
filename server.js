@@ -8,8 +8,6 @@ https = require('https')
 var apiKey = process.env.GOOGLE_API || 'api'
 var cx = process.env.CX_KEY || 'cx' 
 
-var googleUrl = 'https://www.googleapis.com/customsearch/v1?key=' + apiKey + '&cx' + cx + '=&q=cat&searchType=image&alt=json&num=10&start=1'
-
 app.get('/search/*', function (req, res) {
     var query = req.params[0]
     mongo.connect(mongoUrl, function (err, db) {
