@@ -8,8 +8,9 @@ https = require('https')
 var apiKey = process.env.GOOGLE_API || 'api'
 var cx = process.env.CX_KEY || 'cx' 
 
-app.get('/search/*', function (req, res) {
-    var query = req.params[0]
+app.get('/search/:query', function (req, res) {
+    var query = req.params.query
+    var offset = parseInt(req.query.offset) || 0;
     mongo.connect(mongoUrl, function (err, db) {
         if (err) {
             return res.send(err);
@@ -25,7 +26,7 @@ app.get('/search/*', function (req, res) {
         db.close();
     })
 
-    var queryUrl = 'https://www.googleapis.com/customsearch/v1?key=' + apiKey + '&cx=' + cx + '&q=' + query + '&searchType=image&alt=json&num=10&start=1';
+    var queryUrl = 'https://www.googleapis.com/customsearch/v1?key=' + apiKey + '&cx=' + cx + '&q=' + query + '&searchType=image&alt=json&num=10&start='+offset;
 
     https.get(queryUrl, function (response) {
         var data = "";
