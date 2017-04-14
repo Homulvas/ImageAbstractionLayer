@@ -3,7 +3,7 @@ var app = express()
 var mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/test2'
 var mongodb = require("mongodb")
 var mongo = mongodb.MongoClient
-https = require('https')
+var https = require('https')
 
 var apiKey = process.env.GOOGLE_API || 'api'
 var cx = process.env.CX_KEY || 'cx' 
