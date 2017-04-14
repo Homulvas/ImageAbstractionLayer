@@ -5,8 +5,8 @@ var mongodb = require("mongodb")
 var mongo = mongodb.MongoClient
 var https = require('https')
 
-var apiKey = process.env.GOOGLE_API || 'api'
-var cx = process.env.CX_KEY || 'cx' 
+var apiKey = process.env.GOOGLE_API || 'AIzaSyAVY3qDn1dWMqp7GgaPyGgo1T-s6bMFL9U'
+var cx = process.env.CX_KEY || '001664457385286811569:2ikmunrihjk'
 
 app.get('/search/:query', function (req, res) {
     var query = req.params.query
@@ -26,23 +26,28 @@ app.get('/search/:query', function (req, res) {
         db.close();
     })
 
-    var queryUrl = 'https://www.googleapis.com/customsearch/v1?key=' + apiKey + '&cx=' + cx + '&q=' + query + '&searchType=image&alt=json&num=10&start='+offset;
+    var queryUrl = 'https://www.googleapis.com/customsearch/v1?key=' + apiKey + '&cx=' + cx + '&q=' + query + '&searchType=image&alt=json&num=10&start=' + offset;
 
     https.get(queryUrl, function (response) {
         var data = "";
         response.setEncoding('utf8');
         response.on('data', function (chunk) {
-            data+=chunk
+            data += chunk
         })
         var result = []
+
         response.on('end', function () {
             var fullResponse = JSON.parse(data)
-            for (var i = 0; i < fullResponse.items.length; i ++) {
-                var item = fullResponse.items[i]
-                var image = {url: item.link, thumbnail: item.image.thumbnailLink, snippet: item.snippet}
-                result.push(image)
+            if (fullResponse.error) {
+                res.send('unexpected error')
+            } else {
+                for (var i = 0; i < fullResponse.items.length; i++) {
+                    var item = fullResponse.items[i]
+                    var image = { url: item.link, thumbnail: item.image.thumbnailLink, snippet: item.snippet }
+                    result.push(image)
+                }
+                res.send(JSON.stringify(result))
             }
-            res.send(JSON.stringify(result))
         })
     })
 })
