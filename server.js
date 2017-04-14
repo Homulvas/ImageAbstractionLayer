@@ -10,7 +10,7 @@ var cx = process.env.CX_KEY || 'cx'
 
 app.get('/search/:query', function (req, res) {
     var query = req.params.query
-    var offset = parseInt(req.query.offset) || 0;
+    var offset = parseInt(req.query.offset) + 1 || 1;
     mongo.connect(mongoUrl, function (err, db) {
         if (err) {
             return res.send(err);
