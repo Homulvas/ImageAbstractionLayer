@@ -5,8 +5,8 @@ var mongodb = require("mongodb")
 var mongo = mongodb.MongoClient
 var https = require('https')
 
-var apiKey = process.env.GOOGLE_API || 'AIzaSyAVY3qDn1dWMqp7GgaPyGgo1T-s6bMFL9U'
-var cx = process.env.CX_KEY || '001664457385286811569:2ikmunrihjk'
+var apiKey = process.env.GOOGLE_API || 'api'
+var cx = process.env.CX_KEY || 'cx'
 
 app.get('/search/:query', function (req, res) {
     var query = req.params.query
@@ -46,7 +46,7 @@ app.get('/search/:query', function (req, res) {
                     var image = { url: item.link, thumbnail: item.image.thumbnailLink, snippet: item.snippet }
                     result.push(image)
                 }
-                res.send(JSON.stringify(result))
+                res.json(JSON.stringify(result))
             }
         })
     })
@@ -65,7 +65,7 @@ app.get('/recent', function (req, res) {
                 if (err) {
                     return res.send(err);
                 }
-                res.send(JSON.stringify(data))
+                res.json(JSON.stringify(data))
             })
 
         db.close();
